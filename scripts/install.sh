@@ -7,12 +7,16 @@
 #   ./scripts/install.sh --apply --full      # kit completo: + rtk, caveman, token-optimizer, graphify, memory-diet, vault, sync do repo
 #   ./scripts/install.sh --apply --experimental   # + pxpipe (lossy, sessão isolada). headroom fica manual (ver docs/INSTALAR.md)
 #   ./scripts/install.sh --apply --no-deny-agent   # não desliga subagents
+#   ./scripts/install.sh --apply --no-auto-update  # não instala o timer que dá git pull neste clone
+#   ./scripts/install.sh --apply --refresh         # (usado pelo self-update) só reinstala scripts/hooks/units
 set -euo pipefail
 
-APPLY=0; PLUGINS=0; DENY_AGENT=1; FULL=0; EXPERIMENTAL=0
+APPLY=0; REFRESH=0; AUTOUPDATE=1; PLUGINS=0; DENY_AGENT=1; FULL=0; EXPERIMENTAL=0
 for a in "$@"; do
   case "$a" in
     --apply) APPLY=1 ;;
+    --refresh) REFRESH=1 ;;
+    --no-auto-update) AUTOUPDATE=0 ;;
     --plugins) PLUGINS=1 ;;
     --full) FULL=1; PLUGINS=1 ;;
     --experimental) EXPERIMENTAL=1 ;;
@@ -28,6 +32,24 @@ run() { if [ "$APPLY" = 1 ]; then echo "+ $*"; "$@"; else echo "[dry-run] $*"; f
 command -v python3 >/dev/null || { echo "precisa de python3"; exit 1; }
 command -v jq >/dev/null || { echo "precisa de jq"; exit 1; }
 mkdir -p "$CL/bin"
+
+# --refresh: só recopia scripts/hooks/units já instalados (sem plugins, sem mexer em settings.json)
+if [ "$REFRESH" = 1 ]; then
+  for f in token-diet.py memory-diet.py otimization-sync.py claude-px; do
+    [ -f "$HERE/scripts/$f" ] && [ -f "$CL/bin/$f" ] && install -m 755 "$HERE/scripts/$f" "$CL/bin/$f"
+  done
+  install -m 755 "$HERE/scripts/self-update.sh" "$CL/bin/claude-otimization-self-update"
+  [ -f "$CL/hooks/economia/floor-guard.py" ] && install -m 755 "$HERE/hooks/floor-guard.py" "$CL/hooks/economia/floor-guard.py"
+  if [ -d "$HOME/.config/systemd/user" ]; then
+    for u in token-diet memory-diet claude-otimization-update; do
+      for e in service timer; do
+        [ -f "$HOME/.config/systemd/user/$u.$e" ] && install -m 644 "$HERE/systemd/$u.$e" "$HOME/.config/systemd/user/$u.$e"
+      done
+    done
+    [ -z "${SKIP_SYSTEMD:-}" ] && systemctl --user daemon-reload 2>/dev/null || true
+  fi
+  echo "refresh ok"; exit 0
+fi
 
 # 1) rotina token-diet
 run install -m 755 "$HERE/scripts/token-diet.py" "$CL/bin/token-diet.py"
@@ -68,6 +90,20 @@ if [ "$APPLY" = 1 ]; then
   fi
 else
   echo "[dry-run] registrar hook floor-guard em settings.json (SessionStart)"
+fi
+
+# 3c) auto-update deste clone (timer diário: git pull --ff-only + refresh)
+if [ "$AUTOUPDATE" = 1 ]; then
+  run mkdir -p "$CL/token-diet"
+  if [ "$APPLY" = 1 ]; then echo "$HERE" > "$CL/token-diet/repo-path"; fi
+  run install -m 755 "$HERE/scripts/self-update.sh" "$CL/bin/claude-otimization-self-update"
+  if command -v systemctl >/dev/null && systemctl --user show-environment >/dev/null 2>&1; then
+    run install -m 644 "$HERE/systemd/claude-otimization-update.service" "$HERE/systemd/claude-otimization-update.timer" "$HOME/.config/systemd/user/"
+    run systemctl --user daemon-reload
+    run systemctl --user enable --now claude-otimization-update.timer
+  else
+    echo "sem systemd --user: rode $CL/bin/claude-otimization-self-update de vez em quando (ou git pull)."
+  fi
 fi
 
 # 4) plugins opcionais (terceiros — leia docs/DECISOES.md antes)

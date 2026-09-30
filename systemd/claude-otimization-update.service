@@ -1,0 +1,6 @@
+[Unit]
+Description=claude-otimization: atualiza o clone e reinstala scripts
+[Service]
+Type=oneshot
+Nice=19
+ExecStart=%h/.claude/bin/claude-otimization-self-update

@@ -1,0 +1,8 @@
+[Unit]
+Description=claude-otimization update diario
+[Timer]
+OnCalendar=*-*-* 07:00:00
+Persistent=true
+RandomizedDelaySec=1800
+[Install]
+WantedBy=timers.target
