@@ -5,7 +5,8 @@ Feito a partir de um setup real e pesado (200+ skills, 12 plugins, dezenas de pr
 
 - 📖 [`docs/OTIMIZACAO.md`](docs/OTIMIZACAO.md) — guia completo (o que pesa, como cortar, o kit, como medir)
 - 🧭 [`docs/DECISOES.md`](docs/DECISOES.md) — decisões, motivos, como reverter, tabela de alavancas
-- 🤖 [`docs/AGENTE.md`](docs/AGENTE.md) — prompt pra colar no **seu** Claude e ele aplicar tudo com confirmação
+- 🚀 [`docs/INSTALAR.md`](docs/INSTALAR.md) — instalar tudo (abra o Claude aqui e peça: "instala o kit")
+- 🤖 [`docs/AGENTE.md`](docs/AGENTE.md) — prompt pra colar no **seu** Claude
 
 ## Uso rápido
 

@@ -36,11 +36,13 @@
 - `*` -> claude-fanout.sh
 - `compact` -> python-launcher.sh
 - `*` -> session-start-notice.py
+- `*` -> "~/.claude/hooks/context-mode-ca
 
 ## Stop
 - `*` -> python-launcher.sh
 - `*` -> python-launcher.sh
 - `*` -> python-launcher.sh
+- `*` -> auto-renovar.py
 
 ## StopFailure
 - `*` -> python-launcher.sh
