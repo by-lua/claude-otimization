@@ -1,0 +1,7 @@
+[Unit]
+Description=token-diet: enxuga skills sem uso (name-only)
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/python3 %h/.claude/bin/token-diet.py --apply

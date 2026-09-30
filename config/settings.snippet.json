@@ -1,0 +1,5 @@
+{
+  "permissions": { "deny": ["Agent"] },
+  "effortLevel": "low",
+  "model": "sonnet"
+}
