@@ -1,7 +1,7 @@
 [Unit]
-Description=otimization-sync semanal (depois do token-diet)
+Description=otimization-sync diário
 [Timer]
-OnCalendar=Sun *-*-* 05:40:00
+OnCalendar=*-*-* 06:00:00
 Persistent=true
 [Install]
 WantedBy=timers.target
