@@ -22,7 +22,12 @@ Requer `python3` e `jq`; o timer usa `systemd --user` (sem ele, rode o `token-di
 ## O que tem aqui
 - `scripts/token-diet.py` — skills sem uso em 30 dias viram `name-only` (reversível); relata agents e memória
 - `scripts/install.sh` — instalador com dry-run por padrão
-- `systemd/` — timer semanal do token-diet
+- `scripts/memory-diet.py` — encurta os índices `MEMORY.md` (ganchos longos), com backup
+- `scripts/otimization-sync.py` — gera `inventory/` sanitizado (plugins, MCPs, hooks, rotinas) e dá commit/push
+- `scripts/claude-px` — abre uma sessão isolada atrás do pxpipe (teste)
+- `vault/` — versão mínima do método `claude-code-memory-setup` (vault + `/vault-save`, `/vault-resume`)
+- `inventory/` — snapshot automático do setup do autor (sem conteúdo de skills próprias)
+- `systemd/` — timers semanais (token-diet, memory-diet, otimization-sync)
 - `config/settings.snippet.json` — trechos de `settings.json`
 
 Ferramentas de terceiros citadas (rtk, caveman, token-optimizer, context-mode, headroom…) **não** são redistribuídas aqui: só links e status de teste.

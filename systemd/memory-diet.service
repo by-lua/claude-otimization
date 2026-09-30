@@ -1,0 +1,6 @@
+[Unit]
+Description=memory-diet: encurta indices MEMORY.md
+[Service]
+Type=oneshot
+Nice=19
+ExecStart=/usr/bin/python3 %h/.claude/bin/memory-diet.py --apply

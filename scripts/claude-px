@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Abre UMA sessao do Claude Code atras do pxpipe (teste). Nao afeta as outras sessoes.
+# pxpipe e lossy: IDs/hashes em conteudo denso podem ser lidos errado. Nao use pra trabalho byte-exato.
+exec "$HOME/.local/bin/pxpipe" warp -- claude "$@"

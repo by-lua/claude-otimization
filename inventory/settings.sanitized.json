@@ -1,0 +1,26 @@
+{
+  "model": "sonnet",
+  "effortLevel": "low",
+  "permissions": {
+    "deny": [
+      "Agent"
+    ]
+  },
+  "env_keys": [
+    "BH_AGENT_WORKSPACE",
+    "BH_DOMAIN_SKILLS"
+  ],
+  "skillOverrides_count": 149,
+  "hook_events": [
+    "CwdChanged",
+    "PostCompact",
+    "PostToolUse",
+    "PreCompact",
+    "PreToolUse",
+    "SessionEnd",
+    "SessionStart",
+    "Stop",
+    "StopFailure",
+    "UserPromptSubmit"
+  ]
+}

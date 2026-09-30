@@ -22,6 +22,12 @@ Conclusão: o problema era **peso fixo + sessões gigantes**, não falta de ferr
 | D7 | **pxpipe**: só sessão descartável | Lossy (IDs/hashes podem sair errados em silêncio), reescreve todo request e passa a credencial por proxy local | não instalar globalmente |
 | D8 | Sync automático da config (systemd timer diário) | O `claude-sync.sh` era manual: última cópia tinha semanas | `systemctl --user disable --now claude-sync.timer` |
 
+| D9 | Regra + rotina de **memória enxuta** (`memory-diet.py`, timer semanal) | MEMORY.md inteiro entra no contexto de toda sessão do projeto (alguns com 14–17 KB). A rotina só encurta o gancho das linhas `- [Título](arq.md) — gancho` para ~110 chars (detalhe fica no arquivo da memória; backup `.bak-diet`). A regra no CLAUDE.md global manda juntar/apagar memórias quando o índice passa de ~40 linhas | restaurar `MEMORY.md.bak-diet` |
+| D10 | **rtk desligado** (hook `PreToolUse` removido) pra testar `claude-code-memory-setup` | Pedido do dono, teste isolado. Atenção: os dois **não** são substitutos (rtk comprime saída de Bash; memory-setup é memória Obsidian + grafo de código). Sem o rtk a saída de comandos volta a entrar crua | reinserir o bloco salvo em `~/.claude/token-diet/rtk-hook-removed.json` em `hooks.PreToolUse` (ou `rtk init -g`) |
+| D11 | **claude-code-memory-setup** em versão mínima: `~/vault` + comandos `/vault-save` e `/vault-resume` (não usar `/resume`: já existe nativo) | Memória declarativa fora do contexto fixo; lê só 3 logs sob demanda. Pipeline de import de chats e Obsidian **não** instalados (import exporta todo histórico, com segredos, pra um vault) | apagar `~/vault` e os 2 comandos |
+| D12 | **pxpipe** instalado em `~/.local/bin`, **sem** ativar globalmente; `claude-px` abre uma sessão isolada atrás do proxy | Lossy; só em teste | `npm rm -g --prefix ~/.local pxpipe-proxy` |
+| D13 | `otimization-sync.py` (timer semanal) publica um **inventário sanitizado** neste repo | Manter o repo igual ao setup real sem vazar nada: só nomes de plugins/MCPs/hooks/rotinas, contagem de skills; scan de segredos aborta o commit | `systemctl --user disable --now otimization-sync.timer` |
+
 ## Ainda por decidir / testar
 - headroom vs rtk: rodar a mesma tarefa com cada um, comparar tokens **e** resultado.
 - context-mode junto com rtk: ver se os dois hooks de `Bash` brigam (`/context-mode:ctx-doctor`, `rtk gain`).

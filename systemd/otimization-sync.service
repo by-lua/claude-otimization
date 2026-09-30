@@ -1,0 +1,6 @@
+[Unit]
+Description=otimization-sync: inventario sanitizado -> repo publico claude-otimization
+[Service]
+Type=oneshot
+Nice=19
+ExecStart=/usr/bin/python3 %h/.claude/bin/otimization-sync.py --push
