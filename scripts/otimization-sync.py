@@ -108,6 +108,7 @@ def copy_generic():
         (f"{CL}/bin/memory-diet.py", "scripts/memory-diet.py"),
         (f"{CL}/bin/otimization-sync.py", "scripts/otimization-sync.py"),
         (f"{CL}/bin/claude-px", "scripts/claude-px"),
+        (f"{CL}/hooks/economia/floor-guard.py", "hooks/floor-guard.py"),
         (f"{CL}/commands/vault-save.md", "vault/commands/vault-save.md"),
         (f"{CL}/commands/vault-resume.md", "vault/commands/vault-resume.md"),
         (os.path.expanduser("~/vault/CLAUDE.md"), "vault/CLAUDE.md"),

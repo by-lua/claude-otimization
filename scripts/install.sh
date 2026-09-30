@@ -55,6 +55,21 @@ if [ "$DENY_AGENT" = 1 ]; then
   fi
 fi
 
+# 3b) floor-guard: hook SessionStart global que avisa quando o piso de contexto passa do teto
+run mkdir -p "$CL/hooks/economia"
+run install -m 755 "$HERE/hooks/floor-guard.py" "$CL/hooks/economia/floor-guard.py"
+if [ "$APPLY" = 1 ]; then
+  [ -f "$CL/settings.json" ] || echo '{}' > "$CL/settings.json"
+  if ! grep -q "floor-guard.py" "$CL/settings.json"; then
+    cp "$CL/settings.json" "$CL/settings.json.bak-floor"
+    jq '.hooks.SessionStart=((.hooks.SessionStart//[])+[{"hooks":[{"type":"command","command":"python3 \"$HOME/.claude/hooks/economia/floor-guard.py\"","timeout":10}]}])' "$CL/settings.json" > "$CL/settings.json.tmp"
+    mv "$CL/settings.json.tmp" "$CL/settings.json"; chmod 600 "$CL/settings.json"
+    echo "+ hook floor-guard registrado (SessionStart)"
+  fi
+else
+  echo "[dry-run] registrar hook floor-guard em settings.json (SessionStart)"
+fi
+
 # 4) plugins opcionais (terceiros — leia docs/DECISOES.md antes)
 if [ "$PLUGINS" = 1 ]; then
   run claude plugin marketplace add mksglu/context-mode

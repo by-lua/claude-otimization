@@ -79,6 +79,13 @@ ou brigar (dois hooks reescrevendo `Bash`). Ative um por vez e compare.
 
 `token-diet` não apaga nada; só mexe nas chaves que ele mesmo criou e guarda backup do `settings.json`.
 
+## 6b. Guarda automática contra inchaço (floor-guard)
+
+`hooks/floor-guard.py` roda em todo início de sessão. Soma `CLAUDE.md` global + da árvore do projeto + tudo que é `@importado`
++ `MEMORY.md` e compara com um teto. Estourou → o Claude avisa e oferece o corte. Padrão que funciona: `CLAUDE.md` do projeto com
+só as normas curtas (~4k) e o resto num arquivo lido sob demanda (uma linha no `CLAUDE.md` dizendo *quando* ler), em vez de
+`@AGENTS.md` importando 30k+ em toda sessão.
+
 ## 7. Como medir (antes/depois)
 
 1. `/context` numa sessão nova, sem digitar nada: anote os tokens de "System prompt", "Skills", "MCP tools", "Memory files".

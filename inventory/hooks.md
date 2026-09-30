@@ -37,6 +37,7 @@
 - `compact` -> python-launcher.sh
 - `*` -> session-start-notice.py
 - `*` -> "~/.claude/hooks/context-mode-ca
+- `*` -> floor-guard.py
 
 ## Stop
 - `*` -> python-launcher.sh
